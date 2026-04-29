@@ -1,0 +1,22 @@
+{
+  "name": "tech-daily-video-remotion",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render": "node ./render.mjs",
+    "render-layout-stress": "node ./scripts/render-layout-stress.mjs",
+    "extract-subtitle-style": "python3 ./scripts/extract_subtitle_style.py"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.340",
+    "@remotion/renderer": "^4.0.340",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "remotion": "^4.0.340"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "typescript": "^5.8.3"
+  }
+}

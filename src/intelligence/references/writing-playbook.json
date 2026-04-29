@@ -1,0 +1,100 @@
+{
+  "version": 3,
+  "purpose": "Positive writing moves for Lumi AI Daily. These are examples of editorial transformations, not templates to copy.",
+  "style_lock": {
+    "all_text_surfaces": "Title, cover, WeChat, video screen copy, narration, Telegram, and Bilibili should share the same daily thesis while adapting to their platform.",
+    "core_chain": "concrete daily change -> plain-language problem -> technical mechanism -> product, cost, workflow, control, or reliability consequence",
+    "term_rule": "A hard term should arrive after the reader has seen the practical problem it names."
+  },
+  "editorial_moves": [
+    {
+      "name": "scene_to_signal",
+      "when_to_use": "A product or model update changes how users work.",
+      "input_shape": "Company X released feature Y; source says it improves Z.",
+      "output_move": "Begin with the work scene that changes, then name the product and explain why the change matters.",
+      "sample": "以前这一步像在等模型给一张答案纸，现在更像看一个工具在你面前把活拆开做。这个差别，才是今天这条更新真正有价值的地方。"
+    },
+    {
+      "name": "mechanism_before_judgment",
+      "when_to_use": "A research item could otherwise become abstract.",
+      "input_shape": "Paper proposes method A to reduce cost B.",
+      "output_move": "Explain the bottleneck first, then explain the method's idea, then state the implication.",
+      "sample": "长上下文贵，不只是因为窗口变大，而是模型推理时要一路带着越来越多的记忆。这个工作动的不是外围调度，而是记忆本身的表示方式。"
+    },
+    {
+      "name": "term_bridge_before_jargon",
+      "when_to_use": "A section contains a hard term, acronym, architecture name, benchmark, chip, model card detail, or paper method.",
+      "input_shape": "The fact draft contains terms such as KV cache, dense model, VRAM, agentic, tool calling, Ascend, or context window.",
+      "output_move": "Write the plain problem first, then introduce the term as the name of that problem, then explain what changes for a concrete reader.",
+      "sample": "模型读很长的材料时，不是看完就忘，它要把前文留下的线索一路带到后面。工程里这部分记忆通常会变成 KV cache；它越大，推理越贵，所以长上下文真正难的不是窗口写多大，而是这份记忆能不能被便宜地带着走。"
+    },
+    {
+      "name": "ordinary_reader_ladder",
+      "when_to_use": "The story has real technical depth but the first paragraph may lose non-specialist readers.",
+      "input_shape": "A model, paper, chip, or infrastructure update needs explanation before judgment.",
+      "output_move": "Use three steps: everyday work scene, system bottleneck, technical mechanism. End with one consequence in product or business language.",
+      "sample": "如果一个 coding agent 只是改一行代码，它像聊天；如果它要读完整仓库、跑测试、反复修 bug，它就开始像一个小型工程流程。这里的瓶颈不只是模型会不会写代码，而是上下文能不能装得下、工具调用能不能稳、失败后能不能继续推进。"
+    },
+    {
+      "name": "cost_or_control_transfer",
+      "when_to_use": "Infrastructure, open-source, chip, cloud, or platform news.",
+      "input_shape": "A model supports hardware, deployment path, or platform integration.",
+      "output_move": "Name which cost or control point is moving, and who gains room to choose.",
+      "sample": "它真正松动的不是一项参数，而是采购和部署时的默认路线。对企业来说，多一条能跑通的算力路径，就多一点议价和架构主动权。"
+    },
+    {
+      "name": "reader_role_anchor",
+      "when_to_use": "A story risks sounding like general industry commentary.",
+      "input_shape": "The news may affect developers, researchers, founders, product teams, or operators.",
+      "output_move": "Pick the first affected reader role and write the consequence from their desk.",
+      "sample": "最先感到变化的不是普通聊天用户，而是每天要把模型接进代码库、工单和内部工具的团队。对他们来说，稳定比惊艳更值钱。"
+    },
+    {
+      "name": "whole_day_compression",
+      "when_to_use": "Closing the article.",
+      "input_shape": "Six stories point to a common direction.",
+      "output_move": "Return to a concrete detail from the opening, then let that detail reveal the single frame behind the day.",
+      "sample": "开头那句“先给用户一个可见更新”，最后看起来不像提示词小技巧，而像 agent 产品成熟的起点：可靠的系统会让人知道它在做什么，也会让团队看清它能被放进哪一段工作。"
+    },
+    {
+      "name": "platform_same_thesis_not_same_sentence",
+      "when_to_use": "Writing Telegram, Bilibili, video screen copy, or narration after the WeChat article direction is known.",
+      "input_shape": "A polished daily thesis and six story roles exist.",
+      "output_move": "Keep the same core judgment but rewrite for the surface: title uses conflict, cover uses visual compression, screen cards use factual bite, narration uses spoken transitions, platform copy uses click reason.",
+      "sample": "同一条主线，在公众号里可以展开成系统能力；到封面上只剩“GPT重写协作”；到口播里则变成一句能听懂的话：模型开始不只是回答，而是要让人看见它怎么把活做完。"
+    },
+    {
+      "name": "cold_open_without_meta_news",
+      "when_to_use": "Opening narration or article lead feels like a daily report template.",
+      "input_shape": "The draft begins with today, this group of news, what I remembered first, or a not-A-but-B contrast.",
+      "output_move": "Remove the meta frame and start with the concrete product/user/engineering friction, then reveal why this detail matters.",
+      "sample": "一个 agent 沉默几十秒，比答错更容易让人不安：你不知道它是在拆任务、调工具，还是已经跑偏。GPT-5.5 这次真正有意思的地方，就藏在这个等待过程里。"
+    },
+    {
+      "name": "subject_first_screen_title",
+      "when_to_use": "A video page title is abstract or missing the actor.",
+      "input_shape": "Title or top progress label says 'long context pressure returns to attention structure' or 'workflow changes'.",
+      "output_move": "Put the company/model/paper/project/platform first, then describe the change; for tight progress labels, use a recognizable subject abbreviation plus the hook.",
+      "sample": "Tensor Product Attention 把长上下文压力带回注意力结构。"
+    },
+    {
+      "name": "lead_card_plus_support_cards",
+      "when_to_use": "Video information cards look equal, flat, or low-density.",
+      "input_shape": "Three cards have similar length, same weight, and all summarize the story.",
+      "output_move": "Make card one the core change, card two the mechanism, and card three the consequence; let card one carry more weight and the others read faster.",
+      "sample": "主卡写“Feldera反拟人”，辅卡写“接口先行”和“边界可观察”，观众先知道核心冲突，再知道机制和影响。"
+    }
+  ],
+  "rhythm_guidance": [
+    "Avoid making every section start with the same contrast pattern.",
+    "Use concrete nouns before abstract nouns.",
+    "Let one paragraph do one job: scene, mechanism, consequence, or judgment.",
+    "Hard terms should arrive after a plain-language problem, not as the first explanation.",
+    "When a section uses an acronym or architecture term, include a reader checkpoint that translates it into cost, workflow, control, reliability, or adoption.",
+    "Use bold only for key entities or the one concept that helps scanning.",
+    "If two adjacent sections use the same opening rhythm, rewrite the later one from another angle.",
+    "Openings should not announce the existence of a news list; they should enter a scene.",
+    "Video page titles and top progress labels should start with the visible actor, not an abstract theme.",
+    "Screen cards need visual and semantic hierarchy: lead, mechanism, consequence."
+  ]
+}

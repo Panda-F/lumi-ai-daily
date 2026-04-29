@@ -1,0 +1,554 @@
+# Self-hosted RSSHub discovery seeds for the tech-daily workflow.
+#
+# Usage:
+#   python3 /Users/dystopia/.openclaw/workspace/scripts/tech_daily_rsshub_discovery.py \
+#     --config /Users/dystopia/.openclaw/workspace/skills/ai-daily-intel/references/rsshub-discovery.toml \
+#     --out /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/discovery/rsshub-candidates.json
+#
+# Notes:
+# - `rsshub_base_url` should point to your own deployment.
+# - `rsshub_base_urls` can add public fallbacks when the local instance is down.
+# - X feeds are the default discovery lane because they are stable to template.
+# - Zhihu feed examples are left commented until you curate reliable RSSHub
+#   routes for your own deployment and cookie policy.
+
+rsshub_base_url = "http://127.0.0.1:1200"
+rsshub_base_urls = [
+  "http://127.0.0.1:1200",
+  "https://rsshub.pseudoyu.com",
+]
+window_hours = 24
+max_items_per_feed = 12
+request_timeout_seconds = 20
+
+[[feeds]]
+name = "karpathy"
+kind = "x"
+feed_path = "/twitter/user/karpathy"
+author = "Andrej Karpathy"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "hardmaru"
+kind = "x"
+feed_path = "/twitter/user/hardmaru"
+author = "hardmaru"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "fchollet"
+kind = "x"
+feed_path = "/twitter/user/fchollet"
+author = "Francois Chollet"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "swyx"
+kind = "x"
+feed_path = "/twitter/user/swyx"
+author = "Shawn Wang"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "simonw"
+kind = "x"
+feed_path = "/twitter/user/simonw"
+author = "Simon Willison"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "natolambert"
+kind = "x"
+feed_path = "/twitter/user/natolambert"
+author = "Nathan Lambert"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "jerryjliu0"
+kind = "x"
+feed_path = "/twitter/user/jerryjliu0"
+author = "Jerry Liu"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "rasbt"
+kind = "x"
+feed_path = "/twitter/user/rasbt"
+author = "Sebastian Raschka"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "emollick"
+kind = "x"
+feed_path = "/twitter/user/emollick"
+author = "Ethan Mollick"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "_philschmid"
+kind = "x"
+feed_path = "/twitter/user/_philschmid"
+author = "Philipp Schmid"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "repligate"
+kind = "x"
+feed_path = "/twitter/user/repligate"
+author = "repligate"
+seed = true
+tier = "experimental_account"
+
+[[feeds]]
+name = "ClementDelangue"
+kind = "x"
+feed_path = "/twitter/user/ClementDelangue"
+author = "Clement Delangue"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "op7418"
+kind = "x"
+feed_path = "/twitter/user/op7418"
+author = "Gui Cang"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "eugeneyan"
+kind = "x"
+feed_path = "/twitter/user/eugeneyan"
+author = "Eugene Yan"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "vikhyatk"
+kind = "x"
+feed_path = "/twitter/user/vikhyatk"
+author = "Vikhyat K"
+seed = true
+tier = "watch_account"
+
+# Official AI lab and platform feeds. These are direct RSS/Atom feeds so the
+# workflow keeps signal even when RSSHub/X lanes are slow or unavailable.
+[[feeds]]
+name = "openai-news"
+kind = "official_news"
+feed_url = "https://openai.com/news/rss.xml"
+author = "OpenAI News"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "google-deepmind-blog"
+kind = "official_news"
+feed_url = "https://deepmind.google/blog/rss.xml"
+author = "Google DeepMind"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "google-ai-blog"
+kind = "official_news"
+feed_url = "https://blog.google/technology/ai/rss/"
+author = "Google AI"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "google-research-blog"
+kind = "research_blog"
+feed_url = "https://research.google/blog/rss/"
+author = "Google Research"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "meta-newsroom"
+kind = "official_news"
+feed_url = "https://about.fb.com/news/feed/"
+author = "Meta Newsroom"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "meta-engineering-blog"
+kind = "engineering_blog"
+feed_url = "https://engineering.fb.com/feed/"
+author = "Engineering at Meta"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "cloudflare-ai-blog"
+kind = "engineering_blog"
+feed_url = "https://blog.cloudflare.com/tag/ai/rss/"
+author = "Cloudflare AI"
+seed = true
+tier = "watch_account"
+
+# Community hotlists used to generate daily search terms.
+[[feeds]]
+name = "linux-do-latest"
+kind = "linux_do"
+feed_url = "https://linux.do/latest.rss"
+author = "LINUX DO"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "linux-do-top"
+kind = "linux_do"
+feed_url = "https://linux.do/top.rss"
+author = "LINUX DO"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "hacker-news-frontpage"
+kind = "hacker_news"
+feed_url = "https://news.ycombinator.com/rss"
+author = "Hacker News"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "reddit-localllama-top"
+kind = "reddit"
+feed_url = "https://old.reddit.com/r/LocalLLaMA/top/.rss?t=day"
+author = "r/LocalLLaMA"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "reddit-localllama-new"
+kind = "reddit"
+feed_url = "https://old.reddit.com/r/LocalLLaMA/new/.rss"
+author = "r/LocalLLaMA"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "reddit-machinelearning-top"
+kind = "reddit"
+feed_url = "https://old.reddit.com/r/MachineLearning/top/.rss?t=day"
+author = "r/MachineLearning"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "reddit-claudeai-top"
+kind = "reddit"
+feed_url = "https://old.reddit.com/r/ClaudeAI/top/.rss?t=day"
+author = "r/ClaudeAI"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "reddit-openai-top"
+kind = "reddit"
+feed_url = "https://old.reddit.com/r/OpenAI/top/.rss?t=day"
+author = "r/OpenAI"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "reddit-singularity-top"
+kind = "reddit"
+feed_url = "https://old.reddit.com/r/singularity/top/.rss?t=day"
+author = "r/singularity"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "juya-ai-daily-rss"
+kind = "roundup"
+feed_url = "https://imjuya.github.io/juya-ai-daily/rss.xml"
+author = "橘鸦Juya"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "bbc-technology"
+kind = "news"
+feed_url = "https://feeds.bbci.co.uk/news/technology/rss.xml"
+author = "BBC Technology"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "bbc-business"
+kind = "news"
+feed_url = "https://feeds.bbci.co.uk/news/business/rss.xml"
+author = "BBC Business"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "ithome-rss"
+kind = "news_cn"
+feed_url = "https://www.ithome.com/rss/"
+author = "IT之家"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-vllm-releases"
+kind = "github_release"
+feed_url = "https://github.com/vllm-project/vllm/releases.atom"
+author = "vLLM"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-transformers-releases"
+kind = "github_release"
+feed_url = "https://github.com/huggingface/transformers/releases.atom"
+author = "Transformers"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-sglang-releases"
+kind = "github_release"
+feed_url = "https://github.com/sgl-project/sglang/releases.atom"
+author = "SGLang"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-llama-cpp-releases"
+kind = "github_release"
+feed_url = "https://github.com/ggerganov/llama.cpp/releases.atom"
+author = "llama.cpp"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-ollama-releases"
+kind = "github_release"
+feed_url = "https://github.com/ollama/ollama/releases.atom"
+author = "Ollama"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-open-webui-releases"
+kind = "github_release"
+feed_url = "https://github.com/open-webui/open-webui/releases.atom"
+author = "Open WebUI"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-langchain-releases"
+kind = "github_release"
+feed_url = "https://github.com/langchain-ai/langchain/releases.atom"
+author = "LangChain"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-llama-index-releases"
+kind = "github_release"
+feed_url = "https://github.com/run-llama/llama_index/releases.atom"
+author = "LlamaIndex"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-openai-python-releases"
+kind = "github_release"
+feed_url = "https://github.com/openai/openai-python/releases.atom"
+author = "openai-python"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-anthropic-sdk-python-releases"
+kind = "github_release"
+feed_url = "https://github.com/anthropics/anthropic-sdk-python/releases.atom"
+author = "anthropic-sdk-python"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-litellm-releases"
+kind = "github_release"
+feed_url = "https://github.com/BerriAI/litellm/releases.atom"
+author = "LiteLLM"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-openai-codex-releases"
+kind = "github_release"
+feed_url = "https://github.com/openai/codex/releases.atom"
+author = "OpenAI Codex"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-claude-code-releases"
+kind = "github_release"
+feed_url = "https://github.com/anthropics/claude-code/releases.atom"
+author = "Claude Code"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-gemini-cli-releases"
+kind = "github_release"
+feed_url = "https://github.com/google-gemini/gemini-cli/releases.atom"
+author = "Gemini CLI"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-vercel-ai-releases"
+kind = "github_release"
+feed_url = "https://github.com/vercel/ai/releases.atom"
+author = "Vercel AI SDK"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-mcp-typescript-sdk-releases"
+kind = "github_release"
+feed_url = "https://github.com/modelcontextprotocol/typescript-sdk/releases.atom"
+author = "MCP TypeScript SDK"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "github-mcp-python-sdk-releases"
+kind = "github_release"
+feed_url = "https://github.com/modelcontextprotocol/python-sdk/releases.atom"
+author = "MCP Python SDK"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "huggingface-blog"
+kind = "blog"
+feed_url = "https://huggingface.co/blog/feed.xml"
+author = "Hugging Face Blog"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "import-ai"
+kind = "blog"
+feed_url = "https://importai.substack.com/feed"
+author = "Import AI"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "one-useful-thing"
+kind = "blog"
+feed_url = "https://www.oneusefulthing.org/feed"
+author = "One Useful Thing"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "raschka-magazine"
+kind = "blog"
+feed_url = "https://magazine.sebastianraschka.com/feed"
+author = "Sebastian Raschka"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "lilian-weng-blog"
+kind = "blog"
+feed_url = "https://lilianweng.github.io/index.xml"
+author = "Lilian Weng"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "simonwillison-blog"
+kind = "blog"
+feed_url = "https://simonwillison.net/atom/everything/"
+author = "Simon Willison"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "interconnects"
+kind = "blog"
+feed_url = "https://www.interconnects.ai/feed"
+author = "Interconnects"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "latent-space"
+kind = "blog"
+feed_url = "https://www.latent.space/feed"
+author = "Latent Space"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "langchain-blog"
+kind = "blog"
+feed_url = "https://blog.langchain.com/rss/"
+author = "LangChain Blog"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "pytorch-blog"
+kind = "blog"
+feed_url = "https://pytorch.org/blog/feed/"
+author = "PyTorch Blog"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "nvidia-blog"
+kind = "blog"
+feed_url = "https://blogs.nvidia.com/feed/"
+author = "NVIDIA Blog"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "ollama-blog"
+kind = "blog"
+feed_url = "https://ollama.com/blog/rss.xml"
+author = "Ollama Blog"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "lobsters-frontpage"
+kind = "lobsters"
+feed_url = "https://lobste.rs/rss"
+author = "Lobsters"
+seed = true
+tier = "watch_account"
+
+# Example custom feeds for other lanes:
+#
+# [[feeds]]
+# name = "zhihu-sample"
+# kind = "zhihu"
+# feed_url = "http://127.0.0.1:1200/zhihu/zhuanlan/your-column"
+# author = "Your Zhihu Seed"
+# seed = true

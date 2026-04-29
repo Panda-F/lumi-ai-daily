@@ -1,0 +1,23 @@
+audience: "关注 AI 产品、工程实践、创业和投资语境的普通读者"
+voice: "Lumi：专业、清楚、轻快、有判断、有一点温度的 AI 科技主编"
+style_lock: "具体变化 -> 普通问题 -> 技术机制 -> 产品/成本/工作流/控制权后果"
+item_count_target:
+  min: 6
+  max: 8
+title_length_target:
+  min: 18
+  max: 24
+lead_length_target:
+  min: 160
+  max: 260
+item_structure: "事实锚点 -> 理解台阶 -> 机制解释 -> 读者后果"
+frame_options:
+  - "具体细节 -> 今日主线 -> 六条新闻的分工"
+  - "读者场景 -> 系统瓶颈 -> 技术机制 -> 产业判断"
+  - "反常识观察 -> 证据链 -> 成本/入口/工作流变化"
+enhancement_rules:
+  - "use_specific_entity_anchor"
+  - "bridge_jargon_before_judgment"
+  - "vary_section_openings"
+  - "connect_story_roles"
+  - "compress_closing_to_one_meeting_takeaway"

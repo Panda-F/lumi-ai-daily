@@ -1,0 +1,49 @@
+version = 1
+id = "ai-codex-2"
+kind = "cron"
+name = "AI 日报生产（Codex）"
+prompt = """
+生成当天 AI 日报正式发布产物，不发送 Telegram。使用 Asia/Shanghai 的当天日期作为 YYYY-MM-DD。产物根目录是当前工作目录下的 YYYY-MM-DD 文件夹；流水线脚本与技能从 /Users/dystopia/.openclaw/workspace 读取。
+
+先阅读并遵循这些规则文件：
+- /Users/dystopia/.openclaw/workspace/skills/ai-daily-intel/SKILL.md
+- /Users/dystopia/.openclaw/workspace/skills/ai-daily-intel/references/source-playbook.md
+- /Users/dystopia/.openclaw/workspace/skills/ai-daily-intel/references/high-signal-sources.md
+- /Users/dystopia/.openclaw/workspace/skills/ai-daily-intel/references/report-template.md
+- /Users/dystopia/.openclaw/workspace/skills/ai-daily-intel/references/title-cover-playbook.md
+- /Users/dystopia/.openclaw/workspace/skills/tech-daily-video-factory/SKILL.md
+- /Users/dystopia/.openclaw/workspace/skills/tech-daily-video-factory/references/lumi-light-video-style.md
+- /Users/dystopia/.openclaw/workspace/skills/daily-multi-platform-publisher/SKILL.md
+- /Users/dystopia/.codex/skills/.system/imagegen/SKILL.md
+
+生产任务只消费已验证 collection。启动后先检查 /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/qa/collection-summary.json：必须同日、targets_met=true、validation_findings 为空。若不存在或失败，停止并写清楚 ai-codex 采集归档未达标；不要刷新 discovery，不要把旧缓存当当天素材。
+
+先运行环境预飞，Fish 必须做 socket + 真实短音频 probe，Remotion public 必须写入当天 build 目录：
+python3 /Users/dystopia/.openclaw/workspace/scripts/preflight_ai_daily_environment.py --date YYYY-MM-DD --out /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/qa/environment-preflight.json --require-fish --require-network --require-remotion-public --require-video-tools --remotion-public-dir /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/build/video/remotion-public
+
+若 collection 已通过但 final/report.md 或 final/social-urls.txt 缺失，先用程序级 builder 补齐：
+python3 /Users/dystopia/.openclaw/workspace/scripts/build_ai_daily_report_from_collection.py --date YYYY-MM-DD --discovery-json /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/discovery/merged-candidates.json --report-out /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/final/report.md --social-urls-out /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/final/social-urls.txt
+
+然后运行统一流水线，只复用 discovery 与 collection，不刷新采集：
+AI_DAILY_COVER_PROVIDER=imagegen_skill AI_DAILY_REQUIRE_IMAGEGEN_COVER=1 AI_DAILY_REMOTION_PUBLIC_DIR=/Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/build/video/remotion-public python3 /Users/dystopia/.openclaw/workspace/scripts/run_tech_daily_pipeline.py --date YYYY-MM-DD --overwrite --augment-sources auto --reuse-discovery always --reuse-collection always
+
+若流水线停在 imagegen_cover_required，读取当天 cover-lab/imagegen-cover-brief.md 和 imagegen-cover-brief.json，使用 imagegen skill 生成 16:9 封面，保存到当天 cover-lab/final-cover.png，并写入或保留 cover-lab/final-cover.json，然后重新运行统一流水线。生图提示词必须保留 Lumi 栏目形象：藤原千花 / Chika Fujiwara from Kaguya-sama: Love Is War，粉色头发、大黑蝴蝶结、圆脸、轻快俏皮的学生会书记气质、白色校服衬衫、黑色肩带/领结细节；胸前有小而清晰的 Lumi 胸牌，放角落且不超过画面 15-18%。
+
+正式发布包必须严格满足：
+- build/video/build-summary.json.result=success，renderer=remotion，tts.effective_provider=fish-speech，remote_fallback_segments=0；不得出现 silent_offline_fallback、macOS say 或 offline_ffmpeg_slideshow。
+- 标题是当天唯一公开标题，title-pack.json 中 primary_hook、wechat_title、video_title、bilibili_title 必须完全相同。
+- 视频保留 final/video.mp4，同时标题化 MP4 副本必须同时存在于 final/ 和 publish/；publish/telegram-send.json.video_file 与 publish/bilibili-upload.json.video_file 必须指向 publish/ 下标题化 MP4，cover_image_file 指向当天 cover-lab/final-cover.png。
+- 微信和视频共用 item-level visual manifest，每条新闻至少 1 张真实来源图；微信公众号 docx 开头必须放当天封面图。
+- 完成前确认 publish/telegram.txt、publish/telegram-send.json、publish/wechat.docx、publish/bilibili.txt、publish/bilibili-upload.json、publish/title-pack.json、final/video.mp4、final/video.srt、cover-lab/final-cover.png、qa/cover-review.json、qa/video-style-review.json、qa/pipeline-summary.json、build/video/build-summary.json、build/video/video-script.json 全部存在且互相指向一致。
+
+最后运行：
+python3 /Users/dystopia/.openclaw/workspace/scripts/audit_tech_daily_artifacts.py YYYY-MM-DD --strict
+"""
+status = "ACTIVE"
+rrule = "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=8;BYMINUTE=30;BYSECOND=0"
+model = "gpt-5.5"
+reasoning_effort = "high"
+execution_environment = "local"
+cwds = ["/Users/dystopia/Desktop/AI-Daily-Reports"]
+created_at = 1777100981775
+updated_at = 1777399000000

@@ -1,0 +1,47 @@
+{
+  "generated_from": "public-web-validation",
+  "entries": [
+    {
+      "source": "The Algorithmic Bridge",
+      "date": "2024-08-21",
+      "title": "The AI Theory of Everything",
+      "lead": "AI 的变化不能只看模型分数，还要看它如何逐层进入工作、产品和组织结构。",
+      "sections": [
+        "用一个总命题把研究、产品、基础设施和采用连成一条线。",
+        "常用历史或文化类比，把技术放进更长时间尺度里解释。"
+      ],
+      "closing": "真正重要的不是今天给 AI 下定义，而是它已经怎样开始改写人的行动。",
+      "visual_mode": [
+        "art_or_cultural_image",
+        "diagram_or_framework"
+      ],
+      "tone_tags": [
+        "human-centered",
+        "essayistic",
+        "big-picture"
+      ],
+      "formal_source": false
+    },
+    {
+      "source": "Interconnects",
+      "date": "2026-02-17",
+      "title": "Open models in perpetual catch-up",
+      "lead": "开源模型真正值得看的不是口号式追平，而是它们在哪些具体任务、成本和组织条件下开始有业务价值。",
+      "sections": [
+        "先给判断，再用编号分论点拆出竞争格局、成本结构和技术盲点。",
+        "对 benchmark、评测口径和行业叙事保持持续怀疑。"
+      ],
+      "closing": "最重要的变化往往不在 headline，而在 adoption、post-training 和成本曲线这些慢变量里。",
+      "visual_mode": [
+        "chart_or_screenshot",
+        "diagram_or_framework"
+      ],
+      "tone_tags": [
+        "operator-view",
+        "judgment-first",
+        "boundary-aware"
+      ],
+      "formal_source": false
+    }
+  ]
+}

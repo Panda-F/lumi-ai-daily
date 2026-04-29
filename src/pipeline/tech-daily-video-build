@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+
+def main() -> int:
+    workspace = Path(__file__).resolve().parents[1]
+    script = workspace / "skills" / "tech-daily-video-factory" / "scripts" / "build_tech_daily_video.py"
+    env = os.environ.copy()
+    env.setdefault("AI_DAILY_SKIP_LIVE_SEARCH_FALLBACK", "0")
+    env.setdefault("AI_DAILY_ALLOW_LIVE_SEARCH_SKIP", "0")
+    return subprocess.call([sys.executable, str(script), *sys.argv[1:]], env=env)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
