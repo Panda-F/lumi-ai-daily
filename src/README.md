@@ -9,4 +9,4 @@ The production code is grouped by responsibility rather than by its original Ope
 - `publishing/`: Telegram, WeChat, and Bilibili packaging.
 - `integrations/`: source and generation helpers that the main pipeline calls at the edge.
 
-This snapshot is optimized for review. Before treating it as a runnable repo, audit and normalize the absolute paths listed in `../docs/absolute-paths.txt`.
+This snapshot is optimized for review. Before treating it as a runnable repo, audit user-local paths and move them behind configuration.

@@ -11,7 +11,7 @@ Use this checklist for the next review pass.
 
 ## Path Hygiene
 
-- Review `docs/absolute-paths.txt`.
+- Search for `/Users/dystopia/`, `.openclaw`, and `.codex` references before turning the snapshot into a portable repo.
 - Classify hard-coded paths into required user-local paths, production roots, and avoidable coupling.
 - Replace avoidable path coupling with a single configurable workspace root before making this a runnable repo.
 
@@ -55,7 +55,4 @@ Use this checklist for the next review pass.
 
 ## Sample Evidence
 
-- Compare `samples/2026-04-28/qa/pipeline-summary.json`.
-- Compare `samples/2026-04-28/build/video/build-summary.json`.
-- Compare `samples/2026-04-28/publish/title-pack.json`.
-- Compare `samples/2026-04-28/publish/telegram-send.json` and `samples/2026-04-28/publish/bilibili-upload.json`.
+- Keep generated run outputs outside the repository unless a deliberately minimized fixture is added.

@@ -1,6 +1,6 @@
 # Source Map
 
-This review snapshot keeps production provenance explicit. Use this map when comparing the reorganized tree with the live OpenClaw/Codex files.
+This review snapshot keeps production provenance explicit. Use this map when comparing the reorganized tree with the live workspace files.
 
 ## Automations
 

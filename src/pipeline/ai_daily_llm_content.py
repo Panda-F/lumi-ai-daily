@@ -73,7 +73,7 @@ MODEL_POLICY_LOCK = threading.Lock()
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate AI daily Markdown content sources with OpenClaw Codex.")
+    parser = argparse.ArgumentParser(description="Generate AI daily Markdown content sources.")
     parser.add_argument("--report", required=True, help="Path to the factual tech-daily Markdown report.")
     parser.add_argument("--report-json", help="Optional report JSON sidecar.")
     parser.add_argument("--candidate-review", help="Optional candidate-review JSON path.")
@@ -798,10 +798,10 @@ def call_openclaw_markdown(context: dict[str, Any], *, slug: str, prompt: str, o
         stdout, stderr = process.communicate()
     if process.returncode not in {0, -signal.SIGTERM} and not output_path.exists():
         detail = (stderr or stdout or "").strip()
-        raise RuntimeError(f"OpenClaw Codex failed with exit code {process.returncode}: {detail[:2000]}")
+        raise RuntimeError(f"Content runner failed with exit code {process.returncode}: {detail[:2000]}")
     text = read_text_file(output_path, max_chars=200000)
     if not text:
-        raise RuntimeError(f"OpenClaw Codex did not write Markdown file: {output_path}")
+        raise RuntimeError(f"Content runner did not write Markdown file: {output_path}")
     return text
 
 
@@ -1228,7 +1228,7 @@ def video_screen_prompt(context: dict[str, Any], editor_map: str = "") -> str:
         "每个卡片标题都贴合当前新闻事实，使用具体名词和动词，像编辑给图表起的小标题："
         "主体要能一眼看出是谁，动作要能看出发生了什么。"
         "卡片标题不要写成栏目名、问题名或泛泛判断；"
-        "例如要写成“Codex进桌面”“1M成本线”“权限跑长活”这类具体标签，而不是“发生变化”“为什么重要”“执行判断”。\n\n"
+        "例如要写成“代码代理进桌面”“1M成本线”“权限跑长活”这类具体标签，而不是“发生变化”“为什么重要”“执行判断”。\n\n"
         "# 输出格式\n"
         "输出 Markdown，格式如下；正文之外省略解释和 JSON 格式：\n"
         "## 顶部进度条\n"

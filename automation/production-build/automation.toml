@@ -1,7 +1,7 @@
 version = 1
 id = "ai-codex-2"
 kind = "cron"
-name = "AI 日报生产（Codex）"
+name = "AI 日报生产"
 prompt = """
 生成当天 AI 日报正式发布产物，不发送 Telegram。使用 Asia/Shanghai 的当天日期作为 YYYY-MM-DD。产物根目录是当前工作目录下的 YYYY-MM-DD 文件夹；流水线脚本与技能从 /Users/dystopia/.openclaw/workspace 读取。
 
@@ -16,7 +16,7 @@ prompt = """
 - /Users/dystopia/.openclaw/workspace/skills/daily-multi-platform-publisher/SKILL.md
 - /Users/dystopia/.codex/skills/.system/imagegen/SKILL.md
 
-生产任务只消费已验证 collection。启动后先检查 /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/qa/collection-summary.json：必须同日、targets_met=true、validation_findings 为空。若不存在或失败，停止并写清楚 ai-codex 采集归档未达标；不要刷新 discovery，不要把旧缓存当当天素材。
+生产任务只消费已验证 collection。启动后先检查 /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/qa/collection-summary.json：必须同日、targets_met=true、validation_findings 为空。若不存在或失败，停止并写清楚采集归档未达标；不要刷新 discovery，不要把旧缓存当当天素材。
 
 先运行环境预飞，Fish 必须做 socket + 真实短音频 probe，Remotion public 必须写入当天 build 目录：
 python3 /Users/dystopia/.openclaw/workspace/scripts/preflight_ai_daily_environment.py --date YYYY-MM-DD --out /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/qa/environment-preflight.json --require-fish --require-network --require-remotion-public --require-video-tools --remotion-public-dir /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/build/video/remotion-public

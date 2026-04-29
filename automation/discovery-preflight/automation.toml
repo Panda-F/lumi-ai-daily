@@ -1,7 +1,7 @@
 version = 1
 id = "ai-codex"
 kind = "cron"
-name = "AI 日报采集归档（Codex）"
+name = "AI 日报采集归档"
 prompt = """
 每天 07:50 Asia/Shanghai 为 AI 日报做当天高质量采集与 collection 归档。工作目录和产物根目录是 /Users/dystopia/Desktop/AI-Daily-Reports；流水线脚本与技能从 /Users/dystopia/.openclaw/workspace 读取。本任务只负责采集、事实稿、source/reference/story visual seed 与 qa/collection-summary.json，不生成正式发布视频，不发送 Telegram。
 

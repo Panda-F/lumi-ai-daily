@@ -12,7 +12,7 @@ The tree is organized like a maintainable open-source repository so the workflow
 
 ```text
 lumi-ai-daily/
-├── automation/              # Codex cron definitions and task memory
+├── automation/              # Daily scheduler definitions
 ├── src/
 │   ├── pipeline/            # Orchestration, discovery, compilation, QA, wrappers
 │   ├── intelligence/        # Source policy, writing rules, templates
@@ -61,7 +61,6 @@ lumi-ai-daily/
 - `docs/audit-checklist.md`: high-value review checklist
 - `docs/source-map.md`: review paths mapped back to production source paths
 - `docs/research/title-cover-benchmark-2026-04-28.md`: title and thumbnail benchmark examples
-- `docs/absolute-paths.txt`: hard-coded absolute paths to inspect
 - `docs/file-index.txt`: snapshot file inventory
 - `docs/checksums.sha256`: snapshot checksums
 
@@ -77,7 +76,5 @@ Excluded on purpose:
 
 Included as lightweight evidence:
 
-- `samples/2026-04-28/qa/`
-- `samples/2026-04-28/build/video/*.json`
-- `samples/2026-04-28/final/*.json|*.md|*.txt|*.srt`
-- `samples/2026-04-28/publish/*.json|*.txt`
+- `samples/README.md`
+- thumbnail benchmark assets under `docs/research/thumbnails/`

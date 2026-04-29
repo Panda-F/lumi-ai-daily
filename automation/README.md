@@ -1,6 +1,6 @@
 # Automation
 
-Codex cron job definitions copied from the live scheduler.
+Daily scheduler definitions copied from the live setup.
 
 - `discovery-preflight/`: daily candidate discovery and preflight collection.
 - `production-build/`: full daily artifact generation, excluding Telegram send.

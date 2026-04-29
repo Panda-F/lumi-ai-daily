@@ -2,7 +2,7 @@
 
 ## System Boundary
 
-The live workflow has two scheduled Codex jobs:
+The live workflow has two scheduled jobs:
 
 - `automation/discovery-preflight`: collects and refreshes the daily candidate pool.
 - `automation/production-build`: produces the full publication bundle without sending Telegram.

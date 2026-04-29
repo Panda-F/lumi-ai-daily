@@ -12,7 +12,6 @@ automation/discovery-preflight/automation.toml
 automation/production-build/automation.toml
 config/README.md
 config/ai_daily_video_style_policy.json
-docs/absolute-paths.txt
 docs/architecture.md
 docs/audit-checklist.md
 docs/legacy-system-analysis-2026-04-24.md
