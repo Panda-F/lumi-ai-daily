@@ -1,5 +1,6 @@
 import React from "react";
 import { fonts, palette } from "./theme";
+import { fitText } from "./TextFit";
 
 export type RailState = "past" | "current" | "future";
 
@@ -13,12 +14,14 @@ export const SegmentedProgressRail: React.FC<{
   segments: RailSegment[];
   style?: React.CSSProperties;
   labelSize?: number;
-}> = ({ segments, style, labelSize = 13 }) => {
+  trackWidth?: number;
+}> = ({ segments, style, labelSize = 13, trackWidth = 1768 }) => {
   const segmentCount = segments.length;
   const effectiveLabelSize =
     segmentCount >= 12 ? Math.max(10, labelSize - 2) : segmentCount >= 10 ? Math.max(11, labelSize - 1) : segmentCount >= 8 ? Math.max(12, labelSize) : labelSize;
   const railGap = segmentCount >= 12 ? 4 : segmentCount >= 10 ? 6 : segmentCount >= 8 ? 8 : 10;
   const segmentGap = segmentCount >= 10 ? 5 : 7;
+  const segmentWidth = Math.max(72, (trackWidth - railGap * Math.max(0, segmentCount - 1)) / Math.max(1, segmentCount));
 
   return (
     <div
@@ -33,6 +36,12 @@ export const SegmentedProgressRail: React.FC<{
         const active = segment.state === "current";
         const past = segment.state === "past";
         const future = segment.state === "future";
+        const fitted = fitText(segment.label, {
+          maxWidth: Math.max(56, segmentWidth - 8),
+          maxFontSize: active ? effectiveLabelSize + 1 : effectiveLabelSize,
+          minFontSize: 8,
+          maxLines: 2
+        });
 
         return (
           <div
@@ -48,16 +57,16 @@ export const SegmentedProgressRail: React.FC<{
             <div
               style={{
                 fontFamily: fonts.body,
-                fontSize: effectiveLabelSize,
+                fontSize: fitted.fontSize,
                 lineHeight: 1.15,
                 fontWeight: active ? 800 : 700,
                 color: active ? palette.deep : past ? palette.text : palette.weakText,
                 opacity: future ? 0.72 : 1,
                 textAlign: "center",
                 padding: "0 2px",
-                whiteSpace: "normal",
-                overflowWrap: "anywhere",
-                wordBreak: "break-word",
+                whiteSpace: "nowrap",
+                overflowWrap: "normal",
+                wordBreak: "keep-all",
                 minHeight: effectiveLabelSize * 2.25,
                 maxHeight: effectiveLabelSize * 2.35,
                 display: "flex",
@@ -65,7 +74,11 @@ export const SegmentedProgressRail: React.FC<{
                 justifyContent: "center"
               }}
             >
-              {segment.label}
+              <div>
+                {fitted.lines.slice(0, 2).map((line, index) => (
+                  <div key={`${segment.key}-${line}-${index}`}>{line}</div>
+                ))}
+              </div>
             </div>
             <div
               style={{

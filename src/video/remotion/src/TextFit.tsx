@@ -26,32 +26,33 @@ const segmentText = (text: string) => {
   if (!cleaned) {
     return [];
   }
-  const mergeAsciiModelTokens = (segments: string[]) => {
-    const merged: string[] = [];
-    for (const segment of segments) {
-      const previous = merged[merged.length - 1];
-      if (
-        previous &&
-        /^[A-Za-z0-9.+/#-]+$/u.test(previous) &&
-        /^[A-Za-z0-9.+/#-]+$/u.test(segment)
-      ) {
-        merged[merged.length - 1] = `${previous}${segment}`;
-      } else {
-        merged.push(segment);
-      }
-    }
-    return merged;
-  };
   try {
     const Segmenter = (Intl as any).Segmenter;
     const segmenter = new Segmenter("zh", { granularity: "word" });
-    const segments = Array.from(segmenter.segment(cleaned) as Iterable<{ segment: string }>)
+    return Array.from(segmenter.segment(cleaned) as Iterable<{ segment: string }>)
       .map((segment) => segment.segment.trim())
       .filter(Boolean);
-    return mergeAsciiModelTokens(segments);
   } catch {
     return cleaned.match(/[A-Za-z0-9][A-Za-z0-9.+/#-]*|[\u4e00-\u9fff]{1,4}|[^\s]/gu) || [cleaned];
   }
+};
+
+const tokenSeparator = (previous: string, token: string) => {
+  if (
+    (/[A-Za-z0-9]$/u.test(previous) && /^[A-Za-z0-9]/u.test(token)) ||
+    (/[,.;:!?]$/u.test(previous) && /^[A-Za-z0-9]/u.test(token))
+  ) {
+    return " ";
+  }
+  return "";
+};
+
+const joinTokens = (tokens: string[]) => {
+  let value = "";
+  for (const token of tokens) {
+    value = value ? `${value}${tokenSeparator(value, token)}${token}` : token;
+  }
+  return value;
 };
 
 const balancedLines = (text: string, maxLines: number, unitsPerLine: number) => {
@@ -64,7 +65,7 @@ const balancedLines = (text: string, maxLines: number, unitsPerLine: number) => 
   let currentUnits = 0;
   for (const token of tokens) {
     const tokenUnits = visualUnits(token);
-    const separator = current && /[A-Za-z0-9]$/u.test(current) && /^[A-Za-z0-9]/u.test(token) ? " " : "";
+    const separator = current ? tokenSeparator(current, token) : "";
     const nextUnits = currentUnits + visualUnits(separator) + tokenUnits;
     if (current && nextUnits > unitsPerLine && lines.length < maxLines - 1) {
       lines.push(current);
@@ -86,7 +87,7 @@ const balancedLines = (text: string, maxLines: number, unitsPerLine: number) => 
       break;
     }
     const moved = previousTokens.pop() as string;
-    lines[lines.length - 2] = previousTokens.join("");
+    lines[lines.length - 2] = joinTokens(previousTokens);
     lines[lines.length - 1] = `${moved}${lines[lines.length - 1]}`;
   }
   return lines;
@@ -122,6 +123,8 @@ export const FitTextBlock: React.FC<{
     <div
       style={{
         ...style,
+        width: maxWidth,
+        maxWidth,
         fontSize: fitted.fontSize,
         lineHeight,
         overflowWrap: "normal",

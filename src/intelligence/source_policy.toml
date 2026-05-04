@@ -1,0 +1,562 @@
+# Lumi AI Daily source policy.
+#
+# This single file owns discovery feeds, high-signal social seeds, search terms,
+# and source-quality rules. It intentionally replaces the old split reference
+# files so daily collection has one obvious place to review.
+
+rsshub_base_url = "http://127.0.0.1:1200"
+rsshub_base_urls = [
+  "http://127.0.0.1:1200",
+  "https://rsshub.pseudoyu.com",
+]
+window_hours = 24
+max_items_per_feed = 10
+request_timeout_seconds = 18
+parallelism = 8
+
+[quality_policy]
+keep = [
+  "first_party_release",
+  "research_paper_or_lab_report",
+  "senior_practitioner_judgment",
+  "developer_workflow_signal",
+  "high_signal_community_discussion",
+]
+drop = [
+  "generic_media_roundup",
+  "seo_summary",
+  "marketing_rewrite_without_detail",
+  "repost_or_translation_only",
+  "blocked_or_unreadable_primary_url",
+  "broad_frontier_hype_without_evidence",
+]
+removed_after_2026_05_02_check = [
+  "https://www.perplexity.ai/hub",
+  "https://feeds.bbci.co.uk/news/technology/rss.xml",
+  "https://feeds.bbci.co.uk/news/business/rss.xml",
+  "https://www.ithome.com/rss/",
+  "https://old.reddit.com/r/singularity/top/.rss?t=day",
+  "https://lobste.rs/rss",
+]
+
+[search_terms]
+hn_queries = [
+  "AI",
+  "LLM",
+  "agent",
+  "Claude Code",
+  "Codex",
+  "Cursor",
+  "MCP",
+  "inference",
+  "evals",
+]
+product_keywords = [
+  "agent",
+  "agents",
+  "api",
+  "claude",
+  "codex",
+  "cursor",
+  "gemini",
+  "inference",
+  "mcp",
+  "models",
+  "release",
+  "video",
+  "voice",
+]
+github_queries = [
+  "llm",
+  "ai agent",
+  "multimodal",
+  "inference",
+  "evals",
+  "mcp",
+  "coding agent",
+]
+zhihu_queries = [
+  "site:www.zhihu.com/people/ (\"AI Agent\" OR \"智能体\") (\"工程\" OR \"工作流\" OR \"实践\")",
+  "site:zhuanlan.zhihu.com (\"大模型\" AND (\"产品\" OR \"工程\" OR \"落地\"))",
+  "site:www.zhihu.com (\"Claude Code\" OR \"Cursor\" OR \"Gemini CLI\" OR \"MCP\") (\"回答\" OR \"文章\")",
+  "\"橘鸦Juya\" \"AI 日报\" site:zhihu.com",
+]
+
+[social_accounts]
+x_core = [
+  "karpathy",
+  "fchollet",
+  "simonw",
+  "swyx",
+  "natolambert",
+  "rasbt",
+  "emollick",
+  "jerryjliu0",
+  "_philschmid",
+  "dotey",
+  "op7418",
+]
+
+[thresholds]
+min_total_candidates = 18
+min_people_voice = 6
+min_product_shadow = 4
+min_research_velocity = 6
+
+[optional_auth]
+github_token_env = "GITHUB_TOKEN"
+github_fallback_token_env = "GH_TOKEN"
+huggingface_token_env = "HF_TOKEN"
+x_enabled = false
+discord_enabled = false
+
+[people_voice]
+hn_queries = [
+  "AI",
+  "LLM",
+  "agent",
+  "Claude Code",
+  "Codex",
+  "Cursor",
+  "MCP",
+  "inference",
+  "evals",
+]
+
+[[people_voice.reddit_feeds]]
+name = "reddit-localllama-top"
+url = "https://old.reddit.com/r/LocalLLaMA/top/.rss?t=day"
+author = "r/LocalLLaMA"
+
+[[people_voice.reddit_feeds]]
+name = "reddit-localllama-new"
+url = "https://old.reddit.com/r/LocalLLaMA/new/.rss"
+author = "r/LocalLLaMA"
+
+[[people_voice.reddit_feeds]]
+name = "reddit-machinelearning-top"
+url = "https://old.reddit.com/r/MachineLearning/top/.rss?t=day"
+author = "r/MachineLearning"
+
+[[people_voice.reddit_feeds]]
+name = "reddit-openai-top"
+url = "https://old.reddit.com/r/OpenAI/top/.rss?t=day"
+author = "r/OpenAI"
+
+[[people_voice.reddit_feeds]]
+name = "reddit-claudeai-top"
+url = "https://old.reddit.com/r/ClaudeAI/top/.rss?t=day"
+author = "r/ClaudeAI"
+
+[[people_voice.blog_feeds]]
+name = "simonwillison-blog"
+url = "https://simonwillison.net/atom/everything/"
+author = "Simon Willison"
+
+[[people_voice.blog_feeds]]
+name = "latent-space"
+url = "https://www.latent.space/feed"
+author = "Latent Space"
+
+[[people_voice.blog_feeds]]
+name = "interconnects"
+url = "https://www.interconnects.ai/feed"
+author = "Interconnects"
+
+[[people_voice.blog_feeds]]
+name = "one-useful-thing"
+url = "https://www.oneusefulthing.org/feed"
+author = "Ethan Mollick"
+
+[[people_voice.blog_feeds]]
+name = "ahead-of-ai"
+url = "https://magazine.sebastianraschka.com/feed"
+author = "Sebastian Raschka"
+
+[product_shadow]
+keywords = [
+  "agent",
+  "agents",
+  "api",
+  "claude",
+  "codex",
+  "cursor",
+  "gemini",
+  "inference",
+  "mcp",
+  "models",
+  "release",
+  "video",
+  "voice",
+]
+
+[[product_shadow.monitors]]
+name = "anthropic-news"
+company = "Anthropic"
+url = "https://www.anthropic.com/news"
+
+[[product_shadow.monitors]]
+name = "anthropic-release-notes"
+company = "Anthropic"
+url = "https://docs.anthropic.com/en/release-notes/overview"
+
+[[product_shadow.monitors]]
+name = "mistral-news"
+company = "Mistral AI"
+url = "https://mistral.ai/news"
+
+[[product_shadow.monitors]]
+name = "cursor-blog"
+company = "Cursor"
+url = "https://cursor.com/blog"
+
+[[product_shadow.monitors]]
+name = "runway-research"
+company = "Runway"
+url = "https://runwayml.com/research"
+
+[[product_shadow.monitors]]
+name = "elevenlabs-blog"
+company = "ElevenLabs"
+url = "https://elevenlabs.io/blog"
+
+[research_velocity]
+arxiv_categories = ["cs.AI", "cs.CL", "cs.CV", "cs.LG"]
+arxiv_max_results = 40
+huggingface_papers_url = "https://huggingface.co/papers/trending"
+github_min_stars = 25
+github_created_days = 7
+github_queries = [
+  "llm",
+  "ai agent",
+  "multimodal",
+  "inference",
+  "evals",
+  "mcp",
+  "coding agent",
+]
+
+[[research_velocity.release_feeds]]
+name = "github-openai-codex-releases"
+url = "https://github.com/openai/codex/releases.atom"
+author = "OpenAI Codex"
+
+[[research_velocity.release_feeds]]
+name = "github-claude-code-releases"
+url = "https://github.com/anthropics/claude-code/releases.atom"
+author = "Claude Code"
+
+[[research_velocity.release_feeds]]
+name = "github-gemini-cli-releases"
+url = "https://github.com/google-gemini/gemini-cli/releases.atom"
+author = "Gemini CLI"
+
+[[research_velocity.release_feeds]]
+name = "github-vercel-ai-releases"
+url = "https://github.com/vercel/ai/releases.atom"
+author = "Vercel AI SDK"
+
+[[research_velocity.release_feeds]]
+name = "github-mcp-typescript-releases"
+url = "https://github.com/modelcontextprotocol/typescript-sdk/releases.atom"
+author = "MCP TypeScript SDK"
+
+[[research_velocity.release_feeds]]
+name = "github-vllm-releases"
+url = "https://github.com/vllm-project/vllm/releases.atom"
+author = "vLLM"
+
+[[research_velocity.release_feeds]]
+name = "github-transformers-releases"
+url = "https://github.com/huggingface/transformers/releases.atom"
+author = "Transformers"
+
+[[research_velocity.release_feeds]]
+name = "github-ollama-releases"
+url = "https://github.com/ollama/ollama/releases.atom"
+author = "Ollama"
+
+[[research_velocity.release_feeds]]
+name = "github-litellm-releases"
+url = "https://github.com/BerriAI/litellm/releases.atom"
+author = "LiteLLM"
+
+[[feeds]]
+name = "karpathy"
+kind = "x"
+feed_path = "/twitter/user/karpathy"
+author = "Andrej Karpathy"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "fchollet"
+kind = "x"
+feed_path = "/twitter/user/fchollet"
+author = "Francois Chollet"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "simonw"
+kind = "x"
+feed_path = "/twitter/user/simonw"
+author = "Simon Willison"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "swyx"
+kind = "x"
+feed_path = "/twitter/user/swyx"
+author = "Shawn Wang"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "natolambert"
+kind = "x"
+feed_path = "/twitter/user/natolambert"
+author = "Nathan Lambert"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "rasbt"
+kind = "x"
+feed_path = "/twitter/user/rasbt"
+author = "Sebastian Raschka"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "emollick"
+kind = "x"
+feed_path = "/twitter/user/emollick"
+author = "Ethan Mollick"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "jerryjliu0"
+kind = "x"
+feed_path = "/twitter/user/jerryjliu0"
+author = "Jerry Liu"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "_philschmid"
+kind = "x"
+feed_path = "/twitter/user/_philschmid"
+author = "Philipp Schmid"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "dotey"
+kind = "x"
+feed_path = "/twitter/user/dotey"
+author = "宝玉"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "op7418"
+kind = "x"
+feed_path = "/twitter/user/op7418"
+author = "歸藏"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "openai-news"
+kind = "official_news"
+feed_url = "https://openai.com/news/rss.xml"
+author = "OpenAI News"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "google-deepmind-blog"
+kind = "official_news"
+feed_url = "https://deepmind.google/blog/rss.xml"
+author = "Google DeepMind"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "google-ai-blog"
+kind = "official_news"
+feed_url = "https://blog.google/technology/ai/rss/"
+author = "Google AI"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "google-research-blog"
+kind = "research_blog"
+feed_url = "https://research.google/blog/rss/"
+author = "Google Research"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "meta-engineering-blog"
+kind = "engineering_blog"
+feed_url = "https://engineering.fb.com/feed/"
+author = "Engineering at Meta"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "cloudflare-ai-blog"
+kind = "engineering_blog"
+feed_url = "https://blog.cloudflare.com/tag/ai/rss/"
+author = "Cloudflare AI"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "hugging-face-blog"
+kind = "engineering_blog"
+feed_url = "https://huggingface.co/blog/feed.xml"
+author = "Hugging Face"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "linux-do-latest"
+kind = "community"
+feed_url = "https://linux.do/latest.rss"
+author = "LINUX DO"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "linux-do-top"
+kind = "community"
+feed_url = "https://linux.do/top.rss"
+author = "LINUX DO"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "hacker-news-frontpage"
+kind = "community"
+feed_url = "https://news.ycombinator.com/rss"
+author = "Hacker News"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "juya-ai-daily"
+kind = "chinese_roundup"
+feed_url = "https://imjuya.github.io/juya-ai-daily/rss.xml"
+author = "橘鸦AI早报"
+seed = true
+tier = "cross_check"
+
+[[feeds]]
+name = "local-llama-top"
+kind = "community"
+feed_url = "https://old.reddit.com/r/LocalLLaMA/top/.rss?t=day"
+author = "r/LocalLLaMA"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "openai-codex-releases"
+kind = "release_feed"
+feed_url = "https://github.com/openai/codex/releases.atom"
+author = "OpenAI Codex"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "claude-code-releases"
+kind = "release_feed"
+feed_url = "https://github.com/anthropics/claude-code/releases.atom"
+author = "Claude Code"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "gemini-cli-releases"
+kind = "release_feed"
+feed_url = "https://github.com/google-gemini/gemini-cli/releases.atom"
+author = "Gemini CLI"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "vercel-ai-releases"
+kind = "release_feed"
+feed_url = "https://github.com/vercel/ai/releases.atom"
+author = "Vercel AI SDK"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "vllm-releases"
+kind = "release_feed"
+feed_url = "https://github.com/vllm-project/vllm/releases.atom"
+author = "vLLM"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "transformers-releases"
+kind = "release_feed"
+feed_url = "https://github.com/huggingface/transformers/releases.atom"
+author = "Transformers"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "simonwillison-blog"
+kind = "longform"
+feed_url = "https://simonwillison.net/atom/everything/"
+author = "Simon Willison"
+seed = true
+tier = "core_account"
+
+[[feeds]]
+name = "latent-space"
+kind = "longform"
+feed_url = "https://www.latent.space/feed"
+author = "Latent Space"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "interconnects"
+kind = "longform"
+feed_url = "https://www.interconnects.ai/feed"
+author = "Interconnects"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "one-useful-thing"
+kind = "longform"
+feed_url = "https://www.oneusefulthing.org/feed"
+author = "Ethan Mollick"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "ahead-of-ai"
+kind = "longform"
+feed_url = "https://magazine.sebastianraschka.com/feed"
+author = "Sebastian Raschka"
+seed = true
+tier = "watch_account"
+
+[[feeds]]
+name = "lilian-weng"
+kind = "longform"
+feed_url = "https://lilianweng.github.io/index.xml"
+author = "Lilian Weng"
+seed = true
+tier = "watch_account"

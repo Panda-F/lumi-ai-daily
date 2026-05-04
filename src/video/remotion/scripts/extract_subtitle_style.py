@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
 
+import sys
+from pathlib import Path
+
+_THIS_FILE = Path(__file__).resolve()
+_SRC_DIR = next(parent for parent in (_THIS_FILE.parent, *_THIS_FILE.parents) if parent.name == "src")
+for _IMPORT_DIR in (
+    _SRC_DIR / "common",
+    _SRC_DIR / "content",
+    _SRC_DIR / "discovery",
+    _SRC_DIR / "visuals",
+    _SRC_DIR / "video",
+):
+    if str(_IMPORT_DIR) not in sys.path:
+        sys.path.insert(0, str(_IMPORT_DIR))
+
 import argparse
 import json
 from dataclasses import dataclass

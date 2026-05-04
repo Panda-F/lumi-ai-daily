@@ -20,7 +20,7 @@ const bodyFont = '-apple-system, "PingFang SC", "Helvetica Neue", sans-serif';
 const monoFont = '"SF Mono", "Menlo", monospace';
 
 const shellPadding = 76;
-const lumiAvatarSrc = staticFile("generated/2026-04-16/images/lumi-avatar.png");
+const lumiAvatarSrc = LUMI_OUTRO_IMAGE_SRC;
 const openingHeroSrc = staticFile(
   "generated/2026-04-15/media/02-02-11-cdn.prod.website-files.com-6914d00328fde4187dc9cdbe_claude-code_vs-code_preview-p-1600.webp"
 );

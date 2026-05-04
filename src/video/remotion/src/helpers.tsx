@@ -3,7 +3,7 @@ import { Html5Video, Img, staticFile } from "remotion";
 import type { MediaKind } from "./types";
 import type { IconName } from "./icons";
 
-export const CATEGORIES = ["早安", "开发生态", "平台策略", "产品应用", "行业动态", "研究追踪"] as const;
+export const CATEGORIES = ["开场", "开发生态", "平台策略", "产品应用", "行业动态", "研究追踪"] as const;
 
 export const stripLeadDecor = (text: string) =>
   text.replace(/^[^A-Za-z0-9\u4e00-\u9fff]+/u, "").replace(/\s+/g, " ").trim();

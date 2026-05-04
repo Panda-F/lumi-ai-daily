@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { AccentBar, BigKeyword, GlassPanel, IssueQuoteBadge, bodyFont, editorialFont } from "./LumiApprovedVisuals";
+import { AccentBar, BigKeyword, GlassPanel, bodyFont, editorialFont } from "./LumiApprovedVisuals";
 import { fallbackMediaArtwork } from "./LumiApprovedVisuals";
 import { renderMedia } from "./helpers";
 import { Icon, type IconName } from "./icons";
@@ -8,7 +8,7 @@ import { palette } from "./theme";
 import { FitTextBlock } from "./TextFit";
 import type { IntroScene as IntroSceneType } from "./types";
 
-const splitAgendaPages = (items: Array<{ index: number; label: string; icon?: string | null }>, pageSize = 8) => {
+const splitAgendaPages = (items: Array<{ index: number; label: string; icon?: string | null }>, pageSize = 12) => {
   const sanitized = items
     .map((item) => ({
       ...item,
@@ -33,9 +33,9 @@ const openingLayoutProfile = (itemCount: number) => {
     return { fontSize: 32, rowPadding: 14, numberSize: 22, lineHeight: 1.16 };
   }
   if (itemCount === 7) {
-    return { fontSize: 28, rowPadding: 10, numberSize: 19, lineHeight: 1.08 };
+    return { fontSize: 23, rowPadding: 4, numberSize: 17, lineHeight: 1.05 };
   }
-  return { fontSize: 24, rowPadding: 8, numberSize: 17, lineHeight: 1.02 };
+  return { fontSize: 21, rowPadding: 4, numberSize: 16, lineHeight: 1.02 };
 };
 
 const chooseLeadTitle = (title?: string | null, fallback = "今日 AI 速递") => {
@@ -56,7 +56,7 @@ export const IntroScene: React.FC<{
   issueQuoteText?: string | null;
   issueQuoteAuthor?: string | null;
   primaryHook?: string | null;
-}> = ({ scene, lumiAvatarSrc, issueQuoteText, issueQuoteAuthor, primaryHook }) => {
+}> = ({ scene, lumiAvatarSrc, issueQuoteText, primaryHook }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const titleCut = scene.shot_regions.find((shot) => shot.kind === "intro_title")?.end_frame ?? Math.round(scene.duration_frames * 0.32);
@@ -68,9 +68,12 @@ export const IntroScene: React.FC<{
   const openingPageIndex = Math.min(openingPages.length - 1, Math.floor(openingFrame / openingPageDuration));
   const openingItems = openingPages[openingPageIndex];
   const openingProfile = openingLayoutProfile(openingItems.length);
-  const coverTitle = chooseLeadTitle(primaryHook || scene.lead_title || scene.title);
+  const coverTitle = "Lumi 的 AI 速递";
   const openingTitle = chooseLeadTitle(primaryHook || scene.transition || scene.lead_title);
-  const coverSummary = chooseLeadTitle(scene.opening || scene.agenda, "今天的 AI 速递开始。");
+  const coverSummary =
+    "一档面向未来决策的 AI 前沿观察：Lumi 从官方发布、可信媒体、论文和开发者社区中筛出高价值信号，讲清技术正在改变什么、谁会先被影响，以及下一步机会与风险在哪里。";
+  const sloganText = issueQuoteText || "于数字荒原，点燃认知之火。";
+  const introKeywords = scene.trend_words?.length ? scene.trend_words.slice(0, 3) : ["过去24小时", "真实来源", "人的判断"];
   const coverIn = spring({
     frame,
     fps,
@@ -93,6 +96,8 @@ export const IntroScene: React.FC<{
   const lumiIntroKind = scene.lumi_intro_kind || scene.primary_media_kind || null;
   const leadMediaSrc = scene.primary_media_src || scene.lead_media_src || null;
   const leadMediaKind = scene.primary_media_kind || null;
+  const resolvedLumiIntroSrc = lumiIntroSrc || lumiAvatarSrc || null;
+  const resolvedLumiIntroKind = lumiIntroSrc ? lumiIntroKind : lumiAvatarSrc ? "image" : null;
   const heroIcon = pickHeroIcon(scene.lead_title || openingTitle);
 
   return (
@@ -136,8 +141,8 @@ export const IntroScene: React.FC<{
                 style={{
                   maxWidth: 720,
                   fontFamily: bodyFont,
-                  fontSize: 32,
-                  lineHeight: 1.52,
+                  fontSize: 30,
+                  lineHeight: 1.46,
                   color: palette.textSoft
                 }}
               >
@@ -150,19 +155,49 @@ export const IntroScene: React.FC<{
                   flexWrap: "wrap"
                 }}
               >
-                {(scene.trend_words || []).slice(0, 3).map((label) => (
+                {introKeywords.map((label) => (
                   <BigKeyword key={label} label={label} />
                 ))}
               </div>
             </div>
 
-            <IssueQuoteBadge
-              hero
-              avatarSrc={lumiAvatarSrc}
-              text={issueQuoteText || undefined}
-              author={issueQuoteAuthor || undefined}
-              style={{ justifySelf: "start", maxWidth: 680 }}
-            />
+            <div
+              style={{
+                justifySelf: "start",
+                maxWidth: 720,
+                display: "grid",
+                gap: 12,
+                padding: "22px 28px",
+                borderRadius: 10,
+                background: "linear-gradient(135deg, rgba(255,255,255,0.88), rgba(255,246,251,0.78))",
+                border: "1px solid rgba(244,114,182,0.18)",
+                boxShadow: "0 18px 42px rgba(31,28,30,0.08)"
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: bodyFont,
+                  fontSize: 18,
+                  lineHeight: 1.1,
+                  color: palette.deep,
+                  fontWeight: 760,
+                  letterSpacing: 0
+                }}
+              >
+                Lumi
+              </div>
+              <div
+                style={{
+                  fontFamily: editorialFont,
+                  fontSize: 38,
+                  lineHeight: 1.18,
+                  color: palette.text,
+                  fontWeight: 740
+                }}
+              >
+                {sloganText}
+              </div>
+            </div>
           </div>
 
           <div
@@ -175,33 +210,19 @@ export const IntroScene: React.FC<{
           >
             <div
               style={{
-                position: "absolute",
-                width: 700,
-                height: 700,
-                borderRadius: 999,
-                background:
-                  "radial-gradient(circle, rgba(244,114,182,0.14) 0%, rgba(192,132,252,0.06) 56%, transparent 74%)"
+                width: 720,
+                height: 520,
+                borderRadius: 12,
+                overflow: "hidden",
+                padding: 14,
+                background: "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,246,251,0.94))",
+                border: "1px solid rgba(244,114,182,0.18)",
+                boxShadow: "0 28px 66px rgba(236,72,153,0.14)"
               }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                width: 590,
-                height: 590,
-                borderRadius: 999,
-                border: "1px solid rgba(244,114,182,0.12)"
-              }}
-            />
-              <div
-                style={{
-                  width: 540,
-                  height: 540,
-                  borderRadius: 999,
-                  overflow: "hidden",
-                  boxShadow: "0 20px 44px rgba(236,72,153,0.12)"
-                }}
-              >
-              {lumiIntroSrc ? renderMedia(lumiIntroSrc, lumiIntroKind, "cover") : fallbackMediaArtwork({ title: coverTitle, icon: heroIcon })}
+            >
+              {resolvedLumiIntroSrc
+                ? renderMedia(resolvedLumiIntroSrc, resolvedLumiIntroKind, "contain")
+                : fallbackMediaArtwork({ title: coverTitle, icon: heroIcon })}
             </div>
           </div>
         </div>
@@ -221,27 +242,27 @@ export const IntroScene: React.FC<{
             <AccentBar width={460} />
             <FitTextBlock
               text={openingTitle}
-              maxWidth={980}
-              maxFontSize={82}
-              minFontSize={44}
-              maxLines={3}
+              maxWidth={850}
+              maxFontSize={66}
+              minFontSize={30}
+              maxLines={4}
               lineHeight={1.08}
               style={{
                 fontFamily: editorialFont,
                 color: palette.text,
                 fontWeight: 700,
-                maxWidth: 980
+                maxWidth: 850
               }}
             />
-            <GlassPanel style={{ padding: openingItems.length >= 7 ? "2px 22px" : "8px 28px" }}>
+            <GlassPanel style={{ padding: openingItems.length >= 7 ? "0 18px" : "8px 28px" }}>
               <div style={{ display: "grid" }}>
                 {openingItems.map((item, index) => (
                   <div
                     key={`${item.label}-${index}`}
                     style={{
                       display: "grid",
-                      gridTemplateColumns: "64px 42px minmax(0, 1fr)",
-                      gap: 16,
+                      gridTemplateColumns: "56px 36px minmax(0, 1fr)",
+                      gap: 13,
                       alignItems: "center",
                       padding: `${openingProfile.rowPadding}px 0`,
                       borderBottom: index === openingItems.length - 1 ? "none" : "1px solid rgba(31,28,30,0.08)"
@@ -263,8 +284,8 @@ export const IntroScene: React.FC<{
                     </div>
                     <div
                       style={{
-                        width: 36,
-                        height: 36,
+                        width: 31,
+                        height: 31,
                         borderRadius: 8,
                         display: "flex",
                         alignItems: "center",
@@ -272,13 +293,13 @@ export const IntroScene: React.FC<{
                         background: "rgba(244,114,182,0.10)"
                       }}
                     >
-                      <Icon name={(item.icon || "sparkles") as IconName} size={20} color={palette.deep} strokeWidth={1.9} />
+                      <Icon name={(item.icon || "sparkles") as IconName} size={17} color={palette.deep} strokeWidth={1.9} />
                     </div>
                     <FitTextBlock
                       text={item.label}
                       maxWidth={760}
                       maxFontSize={openingProfile.fontSize}
-                      minFontSize={22}
+                      minFontSize={16}
                       maxLines={2}
                       lineHeight={openingProfile.lineHeight}
                       style={{
@@ -294,8 +315,8 @@ export const IntroScene: React.FC<{
             </GlassPanel>
           </div>
 
-          <div style={{ display: "grid" }}>
-            <GlassPanel style={{ padding: 18 }}>
+          <div style={{ display: "grid", alignItems: "center" }}>
+            <GlassPanel style={{ padding: 18, height: 620 }}>
               <div
                 style={{
                   position: "absolute",
@@ -311,18 +332,6 @@ export const IntroScene: React.FC<{
                   fallbackMediaArtwork({ title: openingTitle, icon: heroIcon })
                 )}
               </div>
-              <IssueQuoteBadge
-                compact
-                avatarSrc={lumiAvatarSrc}
-                text={issueQuoteText || undefined}
-                author={issueQuoteAuthor || undefined}
-                style={{
-                  position: "absolute",
-                  right: 18,
-                  bottom: 18,
-                  zIndex: 2
-                }}
-              />
             </GlassPanel>
           </div>
         </div>

@@ -1,0 +1,68 @@
+path	说明
+automation/README.md	每日定时任务配置；采集任务和生产任务调用当前目录的新入口。
+automation/discovery-preflight/automation.toml	每日定时任务配置；采集任务和生产任务调用当前目录的新入口。
+automation/production-build/automation.toml	每日定时任务配置；采集任务和生产任务调用当前目录的新入口。
+config/README.md	运行风格配置；控制视频与内容策略。
+config/ai_daily_video_style_policy.json	运行风格配置；控制视频与内容策略。
+src/README.md	src 目录模块说明。
+src/common/ai_daily_paths.py	跨模块公共逻辑；集中路径、日报解析、URL 归一化和标题工具。
+src/common/source_utils.py	跨模块公共逻辑；集中路径、日报解析、URL 归一化和标题工具。
+src/common/tech_daily_parser.py	跨模块公共逻辑；集中路径、日报解析、URL 归一化和标题工具。
+src/content/build_report.py	事实稿生成入口；从当天 discovery 候选生成 report.md 和 social-urls.txt。
+src/content/compile_content.py	内容编译入口；生成 report.json、editorial brief、content-manifest 和 source/reference pack。
+src/content/generate_cover_copy.py	标题和封面文案生成入口；为封面、公众号和 B 站提供统一标题包。
+src/content/generate_title_pack.py	标题和封面文案生成入口；为封面、公众号和 B 站提供统一标题包。
+src/content/llm_content.py	内容生成主逻辑；组装提示词并生成公众号、视频、标题和 B 站文案。
+src/content/render_wechat.py	微信公众号产物入口；只生成一份标题命名 DOCX。
+src/content/wechat_docx.py	DOCX 构建器；把公众号文章和真实配图写成 Word 文档。
+src/content/wechat_media.py	公众号真实配图解析；从 source/reference pack 为每条新闻匹配图片。
+src/discovery/archive_reference_sources.py	真实来源归档；收集来源文本、截图和新闻配图资产。
+src/discovery/archive_social_sources.py	真实来源归档；收集来源文本、截图和新闻配图资产。
+src/discovery/early_signal_discovery.py	信息采集子模块；负责候选源、早期信号或搜索词扩展。
+src/discovery/prepare_discovery.py	信息采集主入口；整合 RSSHub、early signal、搜索词和候选合并。
+src/discovery/rsshub_discovery.py	信息采集子模块；负责候选源、早期信号或搜索词扩展。
+src/discovery/search_terms.py	信息采集子模块；负责候选源、早期信号或搜索词扩展。
+src/discovery/tavily_search.py	外部信息读取能力；供 discovery 采集真实来源和社交内容。
+src/discovery/x_reader.py	外部信息读取能力；供 discovery 采集真实来源和社交内容。
+src/intelligence/report_template.md	编辑策略文件；约束信息源、写法、标题封面和日报模板。
+src/intelligence/source_policy.toml	统一信息源策略；维护 RSSHub、官方源、社交种子和搜索词。
+src/intelligence/title_cover_playbook.md	编辑策略文件；约束信息源、写法、标题封面和日报模板。
+src/intelligence/writing_methodology.md	编辑策略文件；约束信息源、写法、标题封面和日报模板。
+src/intelligence/writing_playbook.json	编辑策略文件；约束信息源、写法、标题封面和日报模板。
+src/intelligence/writing_profile.yaml	编辑策略文件；约束信息源、写法、标题封面和日报模板。
+src/run_tech_daily_pipeline.py	每日主编排入口；串联采集复用、事实稿、内容、封面 brief、视频、公众号和 B 站产物。
+src/video/analyze_bgm_cutpoints.py	BGM 分析；为视频转场和音乐切点提供节奏信息。
+src/video/build_video.py	视频构建主入口；只消费已采集真实配图，组装 TTS、字幕、BGM 和 Remotion 渲染。
+src/video/fish_tts_runtime.py	Fish TTS 运行时；封装配音请求和默认参数。
+src/video/remotion/package-lock.json	Remotion 工程配置。
+src/video/remotion/package.json	Remotion 工程配置。
+src/video/remotion/render-style-demo.mjs	Remotion 渲染或预览脚本。
+src/video/remotion/render.mjs	Remotion 渲染或预览脚本。
+src/video/remotion/scripts/extract_subtitle_style.py	Remotion 辅助脚本；用于模板样式或布局检查。
+src/video/remotion/scripts/render-layout-stress.mjs	Remotion 渲染或预览脚本。
+src/video/remotion/src/Background.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/DailyReport.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/FooterRail.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/Header.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/IntroScene.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/ItemScene.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/LumiApprovedVisuals.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/OutroScene.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/Root.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/SegmentedProgressRail.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/StyleDemo.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/Subtitles.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/TextFit.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/emoji-icon-map.json	Remotion 模板数据或图标映射。
+src/video/remotion/src/helpers.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/icons.tsx	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/index.ts	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/layout.ts	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/lumiAssets.ts	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/theme.ts	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/src/types.ts	Remotion 前端模板组件；定义视频页面、动效、字幕、主题和布局。
+src/video/remotion/tsconfig.json	Remotion 工程配置。
+src/video/render_bilibili.py	B 站产物入口；生成 final/bilibili.txt 和 final/bilibili-upload.json。
+src/video/video_script_payload.py	视频脚本 payload；把内容 manifest 转成 Remotion 场景结构。
+src/visuals/cover_resolver.py	封面解析器；统一定位 final/cover.png 或显式封面。
+src/visuals/prepare_cover_brief.py	封面 brief 入口；把标题包、事实稿和 Lumi 规则转成生图提示词。

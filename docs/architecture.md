@@ -1,72 +1,61 @@
 # Architecture
 
-## System Boundary
+## Boundary
 
-The live workflow has two scheduled jobs:
+The repo keeps the daily AI report path narrow:
 
-- `automation/discovery-preflight`: collects and refreshes the daily candidate pool.
-- `automation/production-build`: produces the full publication bundle without sending Telegram.
+- `automation/discovery-preflight`: collect fresh candidates, source packs, reference packs, and story visuals.
+- `automation/production-build`: consume the collected day and produce video, WeChat DOCX, and Bilibili metadata.
+- Review-facing daily output folders are `01-原始信息/`, `02-文字产出物/`, and `03-视频相关/`; `process/` remains the machine-readable build workspace.
 
-The review tree separates those entrypoints from reusable code under `src/`.
+There is no auto-publish path in this repo.
 
-## Main Modules
+## Modules
 
-### `src/pipeline`
+### `src/run_tech_daily_pipeline.py`
 
-Shared orchestration and validation scripts. The most important file is `run_tech_daily_pipeline.py`, which coordinates:
+Owns the daily orchestration path. It calls discovery reuse, report building, text compile, cover brief preparation, video build, WeChat DOCX rendering, and Bilibili metadata rendering.
 
-- discovery reuse and collection repair
-- text compilation
-- cover copy and title pack generation
-- imagegen cover brief generation, cover assembly/fallback, and cover review
-- video build and style review
-- publish bundle creation
-- final artifact consistency checks
+### `src/common`
 
-### `src/intelligence`
+Shared paths, report parsing, source URL normalization, title cleanup, and compact label helpers.
 
-Editorial policy, source playbooks, high-signal source lists, writing templates, and title/cover strategy references for the AI Daily report.
+### `src/discovery`
 
-### `src/media`
+Owns source discovery, RSSHub and early-signal collection, search term expansion, source/reference archiving, Tavily search, and X reader support. This layer collects real story images and source evidence; it does not generate cover art.
 
-Image acquisition and cover production. The preferred path prepares a prompt brief for the system imagegen skill; Swift-based magazine-cover rendering remains a deterministic fallback and layout-debug tool.
+### `src/content`
+
+Owns factual report generation, content compilation, LLM writing policy, WeChat article assembly, WeChat DOCX rendering, and title/cover copy text. WeChat publishing files live here because they are text/document products.
+
+### `src/visuals`
+
+Owns the cover brief and cover resolution boundary. The actual cover bitmap is generated through the imagegen skill; story images are collected from official, media, paper, product, or network sources.
 
 ### `src/video`
 
-Narrated video production. The Python builder prepares script, voice, media, subtitles, and Remotion manifests; the Remotion project renders the final template.
+Owns video script payloads, Fish TTS runtime, BGM analysis, the Python video builder, and Bilibili text/upload manifest generation.
 
-Key review targets:
+### `src/video/remotion`
 
-- `scripts/build_tech_daily_video.py`
-- `scripts/video_build_script.py`
-- `scripts/video_style_review.py`
-- `remotion/src/ItemScene.tsx`
-- `remotion/src/DailyReport.tsx`
-- `remotion/src/TextFit.tsx`
+Contains the Remotion app, Remotion components, and `.mjs` render/demo scripts. This is the one intentional nested implementation folder.
 
-### `src/publishing`
+### `src/intelligence`
 
-Platform packaging for Telegram, WeChat DOCX, and Bilibili. The WeChat DOCX renderer itself lives in `src/pipeline/wechat_docx_builder.py` because it is shared by the publishing wrapper.
-
-### `src/integrations`
-
-External-source helpers:
-
-- `x-reader` for X/Twitter posts
-- `tavily-search` for web search support
-- `openai-image-gen` for image generation support
+Owns one unified source policy in `source_policy.toml`, plus writing methodology, title/cover playbook, report template, and writing profile.
 
 ## Data Handoff
 
 ```text
-discovery/*.json
-  -> source-pack/ and reference-pack/
-  -> final/report.md + final/report.json + final/content-manifest.json
-  -> assets/story/manifest.json
-  -> cover-lab/imagegen-cover-brief.md/json
-  -> cover-lab/final-cover.png
-  -> build/video/build-summary.json + build/video/video.mp4
-  -> publish/telegram-send.json + publish/wechat.docx + publish/bilibili-upload.json
+process/discovery/*.json
+  -> process/source-pack/ and process/reference-pack/
+  -> process/report.md + process/report.json + process/content-manifest.json
+  -> process/cover/imagegen-cover-brief.md/json
+  -> final/cover.png
+  -> process/video/build-summary.json
+  -> final/<title>｜Lumi的AI速递｜YYYY-MM-DD.mp4 + final/video.srt
+  -> final/<title>｜Lumi的AI速递｜YYYY-MM-DD.docx
+  -> final/bilibili.txt + final/bilibili-upload.json
 ```
 
-The sample data under `samples/2026-04-28/` keeps the JSON/Markdown/TXT/SRT side of that handoff visible without carrying large binary artifacts.
+Story images are collected with source/reference packs. If a selected story has no usable real image, the WeChat DOCX step fails instead of making filler art.

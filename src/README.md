@@ -1,12 +1,10 @@
 # Source Modules
 
-The production code is grouped by responsibility rather than by its original OpenClaw folder names.
-
-- `pipeline/`: orchestration, source archiving, text compile, QA, title/cover helpers, and command wrappers.
-- `intelligence/`: editorial policy, source rules, high-signal feeds, templates, and style references.
-- `media/`: story-image fetching, cover browser helpers, and Swift cover assembly.
-- `video/`: Fish TTS, video script generation, Remotion renderer, and video style review.
-- `publishing/`: Telegram, WeChat, and Bilibili packaging.
-- `integrations/`: source and generation helpers that the main pipeline calls at the edge.
-
-This snapshot is optimized for review. Before treating it as a runnable repo, audit user-local paths and move them behind configuration.
+- `run_tech_daily_pipeline.py`: daily orchestration entry.
+- `common/`: shared paths, report parser, URL/title helpers.
+- `discovery/`: source discovery, source/reference archiving, X reader, Tavily search, and real story image collection.
+- `content/`: factual report, content manifest, WeChat article/DOCX, title pack, and cover copy.
+- `visuals/`: cover brief and cover resolver for the imagegen-based cover step.
+- `video/`: video build, TTS, BGM analysis, video script payload, and Bilibili files.
+- `video/remotion/`: Remotion app and render scripts.
+- `intelligence/`: source policy plus editorial, writing, title, and cover guidance.

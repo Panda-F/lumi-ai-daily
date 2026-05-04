@@ -115,6 +115,7 @@ export const Header: React.FC<{
           top: 76
         }}
         labelSize={railLabelSize}
+        trackWidth={1768}
       />
       {activeCategory ? (
         <div

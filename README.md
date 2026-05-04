@@ -2,79 +2,55 @@
 
 [简体中文](README.zh-CN.md)
 
-Lumi AI Daily is a review-ready snapshot of the AI Daily production pipeline: discovery, source archiving, editorial generation, title and cover strategy, narrated Remotion video, WeChat DOCX, Telegram bundle, and Bilibili metadata.
-
-The tree is organized like a maintainable open-source repository so the workflow can be audited without digging through scheduler internals or historical generated artifacts.
-
-> This is a review snapshot. The live scheduled jobs still execute production scripts from `/Users/dystopia/.openclaw/workspace`, so inspecting this folder will not affect the next automated run.
+Lumi AI Daily is the reviewable source tree for the daily AI news workflow. It keeps the production path focused on three jobs: find fresh high-signal stories and their real visuals, write the WeChat/Bilibili/video copy, and render the Remotion video plus WeChat DOCX and Bilibili metadata.
 
 ## Repository Map
 
 ```text
 lumi-ai-daily/
-├── automation/              # Daily scheduler definitions
+├── automation/              # Daily cron definitions
 ├── src/
-│   ├── pipeline/            # Orchestration, discovery, compilation, QA, wrappers
-│   ├── intelligence/        # Source policy, writing rules, templates
-│   ├── media/               # Story image resolution and cover assembly
-│   ├── video/               # Fish TTS, video builder, Remotion template
-│   ├── publishing/          # Telegram, WeChat DOCX, Bilibili bundle scripts
-│   └── integrations/        # X reader, Tavily search, image generation helpers
-├── config/                  # Runtime policy and style configuration
-├── assets/                  # Shared BGM, Lumi assets, visual references
-├── samples/                 # Lightweight 2026-04-28 run metadata
-└── docs/                    # Architecture notes, source map, audit checklist
+│   ├── run_tech_daily_pipeline.py
+│   ├── common/              # Shared paths, report model, source/title utilities
+│   ├── discovery/           # News/source discovery and real story image collection
+│   ├── content/             # Fact report, content manifest, WeChat DOCX
+│   ├── visuals/             # Cover brief for the imagegen skill
+│   ├── video/               # Video script, TTS, BGM, Bilibili metadata
+│   ├── video/remotion/      # Remotion app and render scripts
+│   └── intelligence/        # One source policy file plus writing/title/cover guidance
+├── config/                  # Runtime style policy
+├── assets/                  # BGM, Lumi identity assets, visual references
+└── docs/                    # Architecture and file inventory
 ```
 
-## Start Here
+## Main Entry Points
 
-- Cron entrypoints:
-  - `automation/discovery-preflight/automation.toml`
-  - `automation/production-build/automation.toml`
-- Pipeline orchestrator:
-  - `src/pipeline/run_tech_daily_pipeline.py`
-- Title and cover strategy:
-  - `src/intelligence/references/title-cover-playbook.md`
-  - `docs/research/title-cover-benchmark-2026-04-28.md`
-- Discovery preflight:
-  - `src/pipeline/tech_daily_prepare_discovery.py`
-- Video builder:
-  - `src/video/scripts/build_tech_daily_video.py`
-  - `src/video/remotion/src/`
-- Publishing:
-  - `src/publishing/scripts/render_publish_bundle.py`
-  - `src/pipeline/wechat_docx_builder.py`
+- `automation/discovery-preflight/automation.toml`
+- `automation/production-build/automation.toml`
+- `src/run_tech_daily_pipeline.py`
+- `src/intelligence/source_policy.toml`
+- `src/discovery/prepare_discovery.py`
+- `src/content/compile_content.py`
+- `src/content/render_wechat.py`
+- `src/visuals/prepare_cover_brief.py`
+- `src/video/build_video.py`
+- `src/video/render_bilibili.py`
 
 ## Pipeline Flow
 
-1. `automation/discovery-preflight` runs the daily discovery preflight.
-2. `src/pipeline/tech_daily_prepare_discovery.py` builds candidate pools and search terms.
-3. `src/pipeline/tech_daily_text_compile.py` and `src/pipeline/ai_daily_llm_content.py` create the factual report and platform copy source.
-4. `src/media/scripts/fetch_story_images.py` resolves item-level visual assets.
-5. `src/pipeline/run_tech_daily_pipeline.py` prepares an imagegen cover brief, then coordinates cover, video, QA, and publish bundle stages.
-6. `src/video/scripts/build_tech_daily_video.py` renders the Remotion video with Fish TTS.
-7. `src/publishing/scripts/render_publish_bundle.py` creates Telegram, WeChat, and Bilibili artifacts.
+1. `discovery/prepare_discovery.py` collects current AI stories and search terms from `src/intelligence/source_policy.toml`.
+2. `content/build_report.py` creates the factual report when daily report inputs are missing.
+3. `content/compile_content.py` and `content/llm_content.py` generate the article, video copy, title pack, and Bilibili copy.
+4. Story images come from the same source/reference packs created during collection; missing item images fail the WeChat DOCX step instead of creating local filler art.
+5. `visuals/prepare_cover_brief.py` prepares the cover brief, then the cover must be generated through the imagegen skill.
+6. `video/build_video.py` renders the Remotion video with Fish TTS.
+7. `content/render_wechat.py` writes the WeChat DOCX; `video/render_bilibili.py` writes the Bilibili files.
+
+Daily outputs use only two top-level artifact folders: `process/` for intermediate materials and `final/` for title-named video, cover, one DOCX, subtitles, and Bilibili metadata.
 
 ## Documentation
 
-- `docs/architecture.md`: module boundaries and data handoffs
-- `docs/audit-checklist.md`: high-value review checklist
-- `docs/source-map.md`: review paths mapped back to production source paths
-- `docs/research/title-cover-benchmark-2026-04-28.md`: title and thumbnail benchmark examples
-- `docs/file-index.txt`: snapshot file inventory
-- `docs/checksums.sha256`: snapshot checksums
-
-## Snapshot Policy
-
-Excluded on purpose:
-
-- `node_modules/`
-- Remotion `.bundle*` build caches
-- historical `remotion/public/generated/` media
-- `__pycache__/` and `*.pyc`
-- full-size generated video/image/audio/DOCX artifacts
-
-Included as lightweight evidence:
-
-- `samples/README.md`
-- thumbnail benchmark assets under `docs/research/thumbnails/`
+- `docs/architecture.md`: current module boundaries and data flow
+- `docs/code-file-index.tsv`: code file list with Chinese notes
+- `docs/file-index.txt`: repository file inventory
+- `docs/checksums.sha256`: current checksums

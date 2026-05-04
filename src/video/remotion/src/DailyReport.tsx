@@ -45,7 +45,7 @@ export const DailyReport: React.FC<{ manifest: RemotionManifest }> = ({ manifest
   const activeIndex = activeScene?.kind === "item" ? activeScene.current_index : 0;
   const activeCategory =
     activeScene?.kind === "intro"
-      ? "早安"
+      ? "开场"
       : activeScene?.kind === "item"
         ? inferCategory(activeScene.title, activeScene.item_kind)
         : "结尾";
@@ -102,7 +102,11 @@ export const DailyReport: React.FC<{ manifest: RemotionManifest }> = ({ manifest
   const introBgmFade = Math.min(introFadeIn, introFadeOut);
   const outroBgmFade = Math.min(outroFadeIn, outroFadeOut);
   const bgmFade =
-    introScene && frame < introEnd ? introBgmFade : outroBgmEnabled && outroScene && frame >= outroStart ? outroBgmFade : 1;
+    introScene && frame < introEnd
+      ? introBgmFade
+      : outroBgmEnabled && outroScene && frame >= outroStart && frame < outroEnd
+        ? outroBgmFade
+        : 0;
 
   const voiceActive =
     activeScene &&
@@ -155,14 +159,7 @@ export const DailyReport: React.FC<{ manifest: RemotionManifest }> = ({ manifest
                   primaryHook={manifest.meta.primary_hook ?? undefined}
                 />
               ) : null}
-              {scene.kind === "item" ? (
-                <ItemScene
-                  scene={scene as ItemSceneType}
-                  lumiAvatarSrc={manifest.meta.lumi_avatar_src ?? null}
-                  issueQuoteText={manifest.meta.issue_quote_text ?? undefined}
-                  issueQuoteAuthor={manifest.meta.issue_quote_author ?? undefined}
-                />
-              ) : null}
+              {scene.kind === "item" ? <ItemScene scene={scene as ItemSceneType} /> : null}
               {scene.kind === "outro" ? <OutroScene scene={scene} /> : null}
               {audioSrc ? (
                 <Sequence from={scene.audio_offset_frames ?? 0}>

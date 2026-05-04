@@ -21,7 +21,9 @@ export type OpeningItem = {
 export type ScreenCard = {
   heading: string;
   body: string;
+  points?: string[];
   icon_hint: string;
+  emphasis?: string;
 };
 
 export type MediaKind = "image" | "gif" | "video";
@@ -120,6 +122,7 @@ export type ItemScene = RemotionSceneBase & {
   display_icon?: string | null;
   content: string;
   interpretation: string;
+  media_summary?: string;
   quote: string;
   hook: string;
   takeaway: string;
@@ -180,7 +183,6 @@ export type RemotionManifest = {
     tts_reference_id?: string;
     html_baseline?: string;
     intro_duration_sec?: number;
-    style_review_status?: string;
     bgm_src?: string | null;
     bgm_volume?: number;
     bgm_provider?: string;

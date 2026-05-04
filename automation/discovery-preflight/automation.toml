@@ -1,29 +1,32 @@
 version = 1
 id = "ai-codex"
 kind = "cron"
-name = "AI 日报采集归档"
+name = "AI 日报采集"
 prompt = """
-每天 07:50 Asia/Shanghai 为 AI 日报做当天高质量采集与 collection 归档。工作目录和产物根目录是 /Users/dystopia/Desktop/AI-Daily-Reports；流水线脚本与技能从 /Users/dystopia/.openclaw/workspace 读取。本任务只负责采集、事实稿、source/reference/story visual seed 与 qa/collection-summary.json，不生成正式发布视频，不发送 Telegram。
+每两天采集当天 AI 日报候选。使用 Asia/Shanghai 的当天日期作为 YYYY-MM-DD。
 
-使用 Asia/Shanghai 的当天日期作为 YYYY-MM-DD。先运行环境预飞：
-python3 /Users/dystopia/.openclaw/workspace/scripts/preflight_ai_daily_environment.py --date YYYY-MM-DD --out /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/qa/environment-preflight.json --require-network --remotion-public-dir /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/build/video/remotion-public
+代码仓库：
+/Users/dystopia/Desktop/AI-Daily-Reports/lumi-ai-daily
 
-然后运行 fresh discovery。旧日缓存只能作为 recovery/seed，不能改日期后标记通过；fresh discovery 失败必须保留 status=fail 与 recovery_candidates/stale_or_seed_only，不得伪装 targets_met=true：
-python3 /Users/dystopia/.openclaw/workspace/scripts/tech_daily_prepare_discovery.py --date YYYY-MM-DD --refresh --window-hours 24 --reuse-min-candidates 40 --min-candidates 40 --min-search-terms 24 --max-attempts 2 --discovery-timeout-seconds 240 --skip-healthcheck --summary-out /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/qa/discovery-preflight.json --strict
+执行边界：
+采集只依赖本仓库脚本与 Codex 自动化/CLI，不调用外部旧代理。
 
-若 discovery 合格但 final/report.md 或 final/social-urls.txt 缺失，使用程序级 builder 生成事实稿，不要临场手写：
-python3 /Users/dystopia/.openclaw/workspace/scripts/build_ai_daily_report_from_collection.py --date YYYY-MM-DD --discovery-json /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/discovery/merged-candidates.json --report-out /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/final/report.md --social-urls-out /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/final/social-urls.txt
+产物根目录：
+/Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD
 
-最后归档 collection：
-python3 /Users/dystopia/.openclaw/workspace/scripts/finalize_tech_daily_collection.py --date YYYY-MM-DD --report /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/final/report.md --social-urls /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/final/social-urls.txt --overwrite
+只做采集，不生成视频，不生成 DOCX，不自动发布。信息源和关键词只读取：
+/Users/dystopia/Desktop/AI-Daily-Reports/lumi-ai-daily/src/intelligence/source_policy.toml
 
-完成条件：qa/collection-summary.json 必须同日、targets_met=true、validation_findings 为空，并且 discovery/search terms/reference pack/source pack/story visual seed 均达标。若 RSSHub 为 0，直接公开源 fallback 可以写 recovery candidates，但 collection-summary 不得 pass，除非后续归档验证全部满足同日与真实来源图要求。
+运行：
+python3 /Users/dystopia/Desktop/AI-Daily-Reports/lumi-ai-daily/src/discovery/prepare_discovery.py --date YYYY-MM-DD --refresh --window-hours 24 --reuse-min-candidates 40 --min-candidates 40 --min-search-terms 24 --max-attempts 2 --discovery-timeout-seconds 240 --summary-out /Users/dystopia/Desktop/AI-Daily-Reports/YYYY-MM-DD/process/qa/discovery-summary.json --strict
+
+完成后只汇报 process/discovery/merged-candidates.json、process/qa/discovery-summary.json、候选数量、RSSHub/社交源是否可用、是否有明显低质量源进入候选。
 """
 status = "ACTIVE"
-rrule = "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=7;BYMINUTE=50;BYSECOND=0"
-model = "gpt-5.5"
-reasoning_effort = "high"
+rrule = "FREQ=DAILY;INTERVAL=2;BYHOUR=15;BYMINUTE=0;BYSECOND=0"
+model = "gpt-5.4-mini"
+reasoning_effort = "medium"
 execution_environment = "local"
-cwds = ["/Users/dystopia/Desktop/AI-Daily-Reports"]
+cwds = ["/Users/dystopia/Desktop/AI-Daily-Reports/lumi-ai-daily"]
 created_at = 1777100962363
 updated_at = 1777399000000

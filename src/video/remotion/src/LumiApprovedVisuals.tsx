@@ -7,9 +7,7 @@ export const editorialFont = '"Songti SC", "STSong", "Noto Serif SC", serif';
 export const bodyFont = '-apple-system, "PingFang SC", "Helvetica Neue", sans-serif';
 export const monoFont = '"SF Mono", "Menlo", monospace';
 
-const fallbackLumiAvatarSrc = staticFile("generated/2026-04-16/images/lumi-avatar.png");
-
-export const defaultIssueQuote = "预测未来最好的方式，就是亲手创造它。";
+export const defaultIssueQuote = "计算的目的不是数字，而是洞察。";
 
 export const GlassPanel: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => {
   return (
@@ -75,7 +73,7 @@ export const clampLabel = (text: string, maxChars: number) => {
   return `${chars.slice(0, Math.max(1, maxChars)).join("")}`;
 };
 
-export const issueQuoteAvatarSrc = (avatarSrc?: string | null) => (avatarSrc ? staticFile(avatarSrc) : fallbackLumiAvatarSrc);
+export const issueQuoteAvatarSrc = (avatarSrc?: string | null) => (avatarSrc ? staticFile(avatarSrc) : null);
 
 export const IssueQuoteBadge: React.FC<{
   text?: string;
@@ -84,7 +82,7 @@ export const IssueQuoteBadge: React.FC<{
   hero?: boolean;
   avatarSrc?: string | null;
   style?: React.CSSProperties;
-}> = ({ text = defaultIssueQuote, author = "Lumi", compact = false, hero = false, avatarSrc, style }) => {
+}> = ({ text = defaultIssueQuote, author = "理查德·汉明", compact = false, hero = false, avatarSrc, style }) => {
   const resolvedAvatarSrc = issueQuoteAvatarSrc(avatarSrc);
   const avatarSize = compact ? 42 : hero ? 64 : 46;
   const bodySize = compact ? 15 : hero ? 23 : 19;
@@ -115,7 +113,9 @@ export const IssueQuoteBadge: React.FC<{
           background: "linear-gradient(135deg, #FECDD3 0%, #F5D0FE 100%)"
         }}
       >
-        <Img src={resolvedAvatarSrc} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        {resolvedAvatarSrc ? (
+          <Img src={resolvedAvatarSrc} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        ) : null}
       </div>
       <div style={{ display: "grid", gap: 3, minWidth: 0 }}>
         <div

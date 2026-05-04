@@ -1,8 +1,8 @@
 # Automation
 
-Daily scheduler definitions copied from the live setup.
+Scheduler definitions copied from the live setup.
 
-- `discovery-preflight/`: daily candidate discovery and preflight collection.
-- `production-build/`: full daily artifact generation, excluding Telegram send.
+- `discovery-preflight/`: every two days, collect candidate news and source evidence with `gpt-5.4-mini`.
+- `production-build/`: every two days, generate video, WeChat DOCX, and Bilibili artifacts from this repository.
 
-Both copied automations currently use `gpt-5.5`, high reasoning, and the Desktop AI Daily reports directory as `cwd`.
+Both automations run in this repository. Telegram delivery stays outside this repo.
